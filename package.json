@@ -1,0 +1,65 @@
+{
+  "_from": "create-project-jay",
+  "_id": "create-project-jay@1.0.3",
+  "_inBundle": false,
+  "_integrity": "sha512-qnQ1a7yWlX1P/VvCbt6HfJbvWzvCAHoFnR3/k+r5iuVsyFQTrVR/TvzNk53nFc7J0AGw9aUzx5V5xlORNgrlvw==",
+  "_location": "/create-project-jay",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "create-project-jay",
+    "name": "create-project-jay",
+    "escapedName": "create-project-jay",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/create-project-jay/-/create-project-jay-1.0.3.tgz",
+  "_shasum": "642169b2f9ed39cc144a4406cfd1847dadfa9d89",
+  "_spec": "create-project-jay",
+  "_where": "/home/jay/Documents/Projects/nodejs/test-cli",
+  "author": {
+    "name": "Jay Singh"
+  },
+  "bin": {
+    "create-project-jay": "bin/cli"
+  },
+  "bundleDependencies": false,
+  "dependencies": {
+    "arg": "^4.1.2",
+    "chalk": "^3.0.0",
+    "commander": "^4.0.1",
+    "esm": "^3.2.25",
+    "execa": "^4.0.0",
+    "inquirer": "^7.0.1",
+    "listr": "^0.14.3",
+    "ncp": "^2.0.0",
+    "pkg-install": "^1.0.0",
+    "rimraf": "^3.0.0",
+    "shell": "^0.5.0",
+    "shelljs": "^0.8.3"
+  },
+  "deprecated": false,
+  "description": "You can clone all of my github demo project using this package.",
+  "keywords": [
+    "nodejs-cli",
+    "cli",
+    "github",
+    "nodejs"
+  ],
+  "license": "ISC",
+  "main": "src/index.js",
+  "name": "create-project-jay",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "version": "1.0.3"
+}
