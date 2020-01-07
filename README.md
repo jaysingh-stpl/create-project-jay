@@ -1,28 +1,8 @@
-## Table of Contents
-- [Available Projects](#available-projects)
-  - [Tic Tack Toe](#Tic-Tack-Toe)
-  - [ReactJs with Flux](#ReactJs-with-Flux)
-  - [Login Registration With React ](#login-registration-with-react )
+## Follow below steps to clone your repository
 
-## Available Projects
-
-You can clone all above from github or clone from this package.
- - Steps to install demo project
-    - First create a empty directory into which you want to clone above demo project from github.
-    - Inside of this new directory intall this package using `npm install create-project-jay` of locally OR install globally using `sudo npm install create-project-jay -g`.
-    - After that run command create-project-jay 
-
-### Tic Tack Toe
-
-You can clone this project directly from github by clicking below link <br>
-https://github.com/jaysingh-stpl/TIcTacToe
-
-### ReactJs with Flux
-
-You can clone this project directly from github by clicking below link <br>
-https://github.com/jaysingh-stpl/reactjs-with-flux
-
-### Login Registration With React
-
-You can clone this project directly from github by clicking below link <br>
-https://github.com/jaysingh-stpl/login-registration-with-react
+You can clone your public git repository.
+- First create a empty directory into which you want to clone your github project.
+- Inside of this new directory run below command to clone repository 
+    - `npm init project-jay` for local setup OR 
+    - install globally using `sudo npm install create-project-jay` and then run command `create-project-jay` and follow the steps.
+- Now your project is cloned and ready to use.

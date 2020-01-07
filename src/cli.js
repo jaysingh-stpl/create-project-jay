@@ -1,65 +1,77 @@
 import arg from 'arg';
 import inquirer from 'inquirer';
+import { promisify } from 'util';
+import request from 'request';
 import { createProject } from './main';
-
+const getRequest = promisify(request)
 function parseArgumentsIntoOptions(rawArgs) {
     const args = arg(
         {
+            '--username': String,
             '--git': Boolean,
             '--yes': Boolean,
             '--install': Boolean,
-            '--build': Boolean,
-            '--replaceText': Boolean,
-            '--environment': Boolean,
+            '-u': '--username',
             '-g': '--git',
             '-y': '--yes',
             '-i': '--install',
-            '-b': '--build',
-            '-r': '--replaceText',
-            '-env': '--environment'
         },
         {
             argv: rawArgs.slice(2),
         }
     );
     return {
-        skipPrompts: args['--yes'] || false,
-        git: args._[0] || false,
-        template: args._[0],
+        username: args['--username'] || false,
+        git: false,
         install: args['--install'] || false,
-        build: false,
-        replaceText: false,
-        environment: args._[0],
+    };
+}
+
+async function promptForGitUsernames(options) {
+    const questions = [];
+    if (!options.username) {
+        questions.push({
+            type: 'input',
+            name: 'username',
+            message: 'Enter your git username ? ',
+            default: false,
+        });
+
+    }
+    const answers = await inquirer.prompt(questions);
+    return {
+        ...options,
+        username: options.username || answers.username
     };
 }
 async function promptForMissingOptions(options) {
-    if (options.skipPrompts) {
-        return {
-            ...options
-        };
-    }
-
     const questions = [];
-
     if (!options.git) {
+        const response = await getRequest({
+            url: `https://api.github.com/users/${options.username}/repos`,
+            headers: {
+                'User-Agent': 'request',
+                'Content-Type': 'application/json'
+            }
+        });
+        options.repos = []
+        const repos = JSON.parse(response.body);
+        if (response.statusCode != 200) {
+            console.log('StatusCode: ', response.statusCode);
+            console.log('Error: ', repos.message)
+            process.exit(1)
+        }
+        for (let i = 0; i < repos.length; i++) {
+            options.repos.push(repos[i].name)
+        }
         questions.push({
             type: 'list',
             name: 'git',
-            choices: ['TIcTacToe', 'reactjs-with-flux', 'login-registration-with-react', 'node-js'],
+            choices: options.repos,
             message: 'Select project to clone ?',
             default: false,
         });
     }
-
-    // if (!options.environment) {
-    //     questions.push({
-    //         type: 'list',
-    //         name: 'environment',
-    //         message: 'Please select environement?',
-    //         choices: ['develop', 'production'],
-    //         default: false,
-    //     });
-    // }
 
     if (!options.install) {
         questions.push({
@@ -70,37 +82,17 @@ async function promptForMissingOptions(options) {
         });
     }
 
-    // if (!options.replaceText) {
-    //     questions.push({
-    //         type: 'confirm',
-    //         name: 'replaceText',
-    //         message: 'Would you like replace text in node_modules?',
-    //         default: false,
-    //     });
-    // }
-
-    // if (!options.build) {
-    //     questions.push({
-    //         type: 'confirm',
-    //         name: 'build',
-    //         message: 'Would you like to create new build?',
-    //         default: false,
-    //     });
-    // }
-
     const answers = await inquirer.prompt(questions);
     return {
         ...options,
         git: options.git || answers.git,
-        environment: options.environment || answers.environment,
         install: options.install || answers.install,
-        build: options.build || answers.build,
-        replaceText: options.replaceText || answers.replaceText,
     };
 }
 
 export async function cli(args) {
     let options = parseArgumentsIntoOptions(args);
+    options = await promptForGitUsernames(options);
     options = await promptForMissingOptions(options);
     await createProject(options);
 }

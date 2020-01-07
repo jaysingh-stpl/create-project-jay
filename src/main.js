@@ -39,7 +39,7 @@ export async function createProject(options) {
             task: (ctx, task) => readdir(options.targetDirectory)
                 .then(files => {
                     if (!files.length) {
-                        return execa('git', ['clone', `https://github.com/jaysingh-stpl/${options.git}.git`, '.']).catch(err => {
+                        return execa('git', ['clone', `https://github.com/${options.username}/${options.git}.git`, '.']).catch(err => {
                             throw new Error(err.message)
                         });
                     } else {
@@ -67,11 +67,6 @@ export async function createProject(options) {
             enabled: () => options.git,
         },
         {
-            title: 'Intialise environment file',
-            task: () => initEnv(options),
-            enabled: () => false//options.environment,
-        },
-        {
             title: 'Install package dependencies with Yarn',
             enabled: () => options.install,
             task: (ctx, task) => execa('yarn')
@@ -84,19 +79,6 @@ export async function createProject(options) {
             title: 'Install package dependencies with npm',
             enabled: ctx => ((ctx.yarn === false) && options.install),
             task: () => execa('npm', ['install'])
-        },
-        {
-            title: 'Replacing text from node_modules',
-            task: () => replaceText(options),
-            enabled: () => false//options.replaceText
-        },
-        {
-            title: `Creating build for ${options.environment}`,
-            task: () => execa('npm', ['run', 'build'])
-                .catch((err) => {
-                    throw new Error(err.message)
-                }),
-            enabled: () => false//options.build
         }
     ]);
 
